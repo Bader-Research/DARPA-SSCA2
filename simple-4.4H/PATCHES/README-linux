@@ -1,0 +1,7 @@
+On a Linux system with MPICH, apply the provided patch
+linux-mpich-patch
+to the MPICH source.
+This changes the ch_p4 library's SIGUSR1 to SIGUNUSED, since
+linuxthreads (pthreads in Linux) use both SIGUSR1 and SIGUSR2
+
+

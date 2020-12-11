@@ -1,0 +1,4 @@
+/home/dbader/linuxcluster/lam/bin/mpirun $PWD/testprog -c2c -nger -O -w n0-1 -- -m $PWD/machines -- 
+
+ 
+

@@ -1,0 +1,145 @@
+/*
+ * SSCA2-Bader: DARPA HPCS SSCA2 Graph Theory implementation
+ * Copyright (C) 1997-2005  David A. Bader
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
+ * USA.
+ * 
+ * Authors:             David A. Bader   <dbader@ece.unm.edu>
+ *			Electrical and Computer Engineering Department
+ *			The University of New Mexico
+ *			Albuquerque, NM 87131
+ *
+ *                      Kamesh Madduri   <kamesh@ece.unm.edu>
+ *			Electrical and Computer Engineering Department
+ *			The University of New Mexico
+ *			Albuquerque, NM 87131
+ *
+ */
+
+
+15 January 2005
+
+CAVEATS:
+========
+
+- This is a work-in-progress; an early release with no guarantees of
+correctness; as RMS says: "This program is distributed in the hope
+that it will be useful, but WITHOUT ANY WARRANTY; without even the
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE."
+
+- Kernel 4 uses an approximation algorithm, and I will propose soon a
+possible bound for the technical specification to characterize a lower
+bound on accuracy. If possible, I will couple this accuracy measure
+with an automatic verification. This verification step need not be
+timed.
+
+
+IMPLEMENTATION DETAILS:
+=======================
+
+This SSCA2 shared-memory implementation uses C with POSIX threads, and
+is written in an SPMD fashion, with private and shared variables and
+collection operations. It requires two libraries that are also
+redistributed in this package, SIMPLE/SMP 4.4 (by Bader), and
+SPRNG2.0a (by Mascagni and Srinivasan). GNU Make (gmake) is required.
+
+The SIMPLE/SMP library provides a library and run-time system for
+shared-memory programming, and SSCA2 is implemented as a module for
+SIMPLE.  Note that I designed the SIMPLE library and implemented it in
+the mid-1990's as a way to efficiently program SMP clusters, before
+parallel programming interface standards such as MPI and POSIX
+threads. Since that time, I have ported SIMPLE to standard parallel
+environments. The "SIMPLE" library uses a two-level approach with
+message passing between nodes, and shared-memory within a node. The
+"SMP-node" library is a subset that implements shared-memory
+primitives on a single symmetric multiprocessor node.  For SSCA2, we
+use only the SMP-node library from SIMPLE.  
+
+As an aside, you may note that the SIMPLE/SMP library is similar in
+concept with UPC. David Culler and Bill Carlson significantly
+motivated my design, through their parallel computing designs, such as
+Culler's Active Messages and Split-C and Carlson's AC (for Thinking
+Machines CM-5, then Cray T3D). UPC is also a descendant of these
+system; but emerged 10 years after I needed it. 
+
+The SPRNG2.0a library from Mike Mascagni and Ashok Srinivasan provides
+a parallel pseudo-random number generator with provable indendepence
+among inter-stream generated values.
+
+SSCA2 contains the benchmark code. Note that the benchmark parameters
+can be set in the getUserParameters.c module.
+
+
+BUILDING:
+=========
+
+The SSCA2 build requires the following tools and libraries built in the following order:
+
+1) GNU Make (not included here)
+2) SPRNG2.0a
+3) SIMPLE/SMP
+
+This package contains the code and Makefiles that are configured for IBM AIX. 
+
+SPRNG2.0a:
+
+	- To change platforms, edit sprng2.0/Make.CHOICES 
+        - Review the corresponding sprng2.0/SRC/make.XXX
+	- cd sprng2.0 ; make
+
+SIMPLE/SMP:
+
+	- Edit simple-4.4H/Makefile.common to select an appropriate platform
+	- Review the corresponding section in simple-4.4H/src/Makefile.var for choices of compilers and flags
+	- Edit the parameters in simple-4.4H/src/Makefile.var for the location of SPRNG2.0
+	- cd simple-4.4H ; gmake smp
+
+SSCA2:
+
+	- Edit SIMPLE_DIR in SSCA2/Makefile.orig to point to the root of the SIMPLE directory
+	- Edit getUserParameters.c to select the problem size (SCALE) and parameters.
+	- cd SSCA2 ; gmake -f Makefile.orig
+
+RUNNING:
+========
+
+cd SSCA2
+./RUN_graphAnalysis -t X
+where "X" is the number of threads (~ processors) to spawn in the shared-memory execution.
+
+
+NOTE:
+  If you have any difficulty porting or compiling these packages, I offer two levels of support.
+
+1) Create a typescript of the build up to the error, and email the typescript to me.
+	Donation requested: lunch the next time we meet. 
+
+2) Create an account for me on your system, and I will build the package for you.
+	Donation requested: dinner the next time we meet.  
+
+Lunch and dinner will be at a restaurant of my choice, typically with
+spicy vegetarian dishes from South India, Asia, Mediterranean (Greek,
+Turkish, Israeli, Arabic, Jordanian, Lebanese, etc.), North African
+(Ethiopian, Egyptian), and so forth. 
+
+
+--
+David A. Bader                                  Office: 505-277-6724
+Associate Professor and Regents' Lecturer       FAX:    505-277-1439
+Electrical and Computer Engineering Department
+University of New Mexico                          dbader@ece.unm.edu
+Albuquerque, NM  87131                http://www.ece.unm.edu/~dbader

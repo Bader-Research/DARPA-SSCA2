@@ -1,0 +1,9 @@
+EXECS = isort
+
+SIMPLE_DIR = ..
+
+OPT         = -O$(O_LEVEL)
+# OPT       = -g
+
+include $(SIMPLE_DIR)/Makefile.smp.mk
+

@@ -1,0 +1,11 @@
+--- mpich.orig/mpid/ch_p4/p4/lib/p4_sys.h       Thu Sep 17 16:00:19 1998
++++ mpich/mpid/ch_p4/p4/lib/p4_sys.h    Mon Feb  8 13:11:50 1999
+@@ -36,7 +36,7 @@
+ #define PRECV_EOF -1
+ 
+ #ifndef LISTENER_ATTN_SIGNAL
+-#define LISTENER_ATTN_SIGNAL SIGUSR1
++#define LISTENER_ATTN_SIGNAL SIGUNUSED
+ #endif
+ 
+ #define LISTENER_ID (-99)

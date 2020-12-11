@@ -1,0 +1,4 @@
+mpirun $PWD/fastest -c2c -nger -O -w n0-1 -- -l8192 -n20 -- 
+
+ 
+
